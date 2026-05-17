@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 夢幻工廠 - 蝦皮賣場全部商品一覽</title>
+<meta name="description" content="AI夢幻工廠 - 蝦皮賣場全部商品，AI換臉、影片生成、音樂創作、語音克隆、AI繪圖... 點擊直達蝦皮下單">
+<style>
+/* ========== Reset & Base ========== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Segoe UI','PingFang TC','Microsoft JhengHei',sans-serif;
+  background:#0a0a12;color:#e0e0e0;line-height:1.6;
+  min-height:100vh;
+}
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:#12121e}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#8b5cf6,#3b82f6);border-radius:4px}
+
+/* ========== Hero ========== */
+.hero{
+  background:linear-gradient(135deg,#0f0c29 0%,#1a1040 40%,#1e1b4b 100%);
+  padding:60px 20px 40px;text-align:center;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:radial-gradient(circle at 30% 50%,rgba(139,92,246,0.08) 0%,transparent 50%),
+             radial-gradient(circle at 70% 50%,rgba(59,130,246,0.06) 0%,transparent 50%);
+  animation:heroGlow 8s ease-in-out infinite alternate;
+}
+@keyframes heroGlow{
+  0%{transform:translate(0,0) rotate(0deg)}
+  100%{transform:translate(-5%,-5%) rotate(3deg)}
+}
+.hero-content{position:relative;z-index:1;max-width:700px;margin:0 auto}
+.hero-logo{
+  width:80px;height:80px;margin:0 auto 16px;
+  background:linear-gradient(135deg,#8b5cf6,#3b82f6,#06b6d4);
+  border-radius:24px;display:flex;align-items:center;justify-content:center;
+  font-size:40px;box-shadow:0 0 40px rgba(139,92,246,0.3);
+}
+.hero h1{
+  font-size:2.2rem;font-weight:800;
+  background:linear-gradient(135deg,#c4b5fd,#60a5fa,#67e8f9);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;margin-bottom:8px;
+}
+.hero p{color:#94a3b8;font-size:1.05rem;margin-bottom:6px}
+.hero .item-count{
+  display:inline-block;background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.3);
+  border-radius:20px;padding:4px 16px;font-size:0.85rem;color:#a78bfa;margin-top:4px;
+}
+.hero .btn-shop{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:20px;padding:12px 32px;
+  background:linear-gradient(135deg,#8b5cf6,#6366f1);
+  color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:600;
+  cursor:pointer;text-decoration:none;transition:all .3s;
+  box-shadow:0 4px 20px rgba(139,92,246,0.4);
+}
+.hero .btn-shop:hover{
+  transform:translateY(-2px);box-shadow:0 6px 30px rgba(139,92,246,0.6);
+}
+
+/* ========== Controls ========== */
+.controls{
+  position:sticky;top:0;z-index:100;
+  background:rgba(10,10,18,0.95);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(139,92,246,0.15);
+  padding:16px 20px;
+}
+.controls-inner{max-width:1200px;margin:0 auto}
+.search-box{
+  display:flex;align-items:center;background:rgba(255,255,255,0.06);
+  border:1px solid rgba(139,92,246,0.2);border-radius:10px;
+  padding:0 16px;margin-bottom:12px;transition:border-color .3s;
+}
+.search-box:focus-within{border-color:#8b5cf6}
+.search-box .icon{color:#64748b;font-size:1.1rem;margin-right:10px}
+.search-box input{
+  flex:1;background:none;border:none;outline:none;
+  padding:10px 0;color:#e0e0e0;font-size:0.95rem;
+}
+.search-box input::placeholder{color:#475569}
+.tags{
+  display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.tags::-webkit-scrollbar{display:none}
+.tag{
+  flex-shrink:0;padding:6px 16px;border-radius:20px;
+  font-size:0.85rem;cursor:pointer;transition:all .25s;
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+  color:#94a3b8;user-select:none;white-space:nowrap;
+}
+.tag:hover{background:rgba(139,92,246,0.12);color:#c4b5fd}
+.tag.active{
+  background:linear-gradient(135deg,#8b5cf6,#6366f1);
+  border-color:transparent;color:#fff;font-weight:600;
+}
+
+/* ========== Items Grid ========== */
+.items-section{max-width:1200px;margin:0 auto;padding:24px 20px 60px}
+.items-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:20px;
+}
+.item-card{
+  background:linear-gradient(145deg,#12121e,#1a1a2e);
+  border:1px solid rgba(139,92,246,0.1);border-radius:16px;
+  overflow:hidden;cursor:pointer;transition:all .35s;
+  text-decoration:none;color:inherit;display:flex;flex-direction:column;
+}
+.item-card:hover{
+  transform:translateY(-6px);
+  border-color:rgba(139,92,246,0.4);
+  box-shadow:0 12px 40px rgba(139,92,246,0.15);
+}
+.item-img-wrap{
+  position:relative;width:100%;padding-top:75%;overflow:hidden;
+  background:#0f0f1a;
+}
+.item-img-wrap img{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  object-fit:cover;transition:transform .5s;
+}
+.item-card:hover .item-img-wrap img{transform:scale(1.08)}
+.item-img-wrap .sold-badge{
+  position:absolute;top:10px;right:10px;
+  background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);
+  padding:3px 10px;border-radius:8px;font-size:0.75rem;color:#fbbf24;
+  border:1px solid rgba(251,191,36,0.2);
+}
+.item-img-wrap .cat-badge{
+  position:absolute;bottom:10px;left:10px;
+  background:rgba(139,92,246,0.85);backdrop-filter:blur(4px);
+  padding:3px 10px;border-radius:6px;font-size:0.7rem;color:#fff;
+  max-width:65%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.item-info{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column}
+.item-name{
+  font-size:0.9rem;font-weight:600;margin-bottom:6px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  line-height:1.4;min-height:2.8em;
+}
+.item-price-row{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:auto;padding-top:10px;
+}
+.item-price{font-size:1.2rem;font-weight:700;color:#a78bfa}
+.item-price .currency{font-size:0.75rem;color:#64748b;font-weight:400}
+.item-link-hint{
+  font-size:0.7rem;color:#475569;
+  display:flex;align-items:center;gap:4px;
+  opacity:0;transition:opacity .3s;
+}
+.item-card:hover .item-link-hint{opacity:1}
+.no-items{
+  grid-column:1/-1;text-align:center;padding:60px 20px;
+  color:#475569;font-size:1.1rem;
+}
+
+/* ========== Footer ========== */
+.footer{
+  background:linear-gradient(135deg,#0f0c29,#1a1040);
+  padding:40px 20px;text-align:center;border-top:1px solid rgba(139,92,246,0.1);
+}
+.footer .btn-shop{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 36px;
+  background:linear-gradient(135deg,#8b5cf6,#6366f1);
+  color:#fff;border:none;border-radius:12px;font-size:1.05rem;font-weight:600;
+  cursor:pointer;text-decoration:none;transition:all .3s;
+  box-shadow:0 4px 20px rgba(139,92,246,0.4);margin-bottom:16px;
+}
+.footer .btn-shop:hover{
+  transform:translateY(-2px);box-shadow:0 6px 30px rgba(139,92,246,0.6);
+}
+.footer .shop-name{color:#94a3b8;font-size:0.9rem;margin-top:8px}
+.footer .shop-name a{color:#a78bfa;text-decoration:none}
+.footer .shop-name a:hover{color:#c4b5fd}
+.footer-meta{margin-top:12px;font-size:0.75rem;color:#334155}
+
+/* ========== Placeholder ========== */
+.img-placeholder{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  background:#16162a;color:#334155;font-size:2rem;
+}
+
+/* ========== RWD ========== */
+@media(max-width:640px){
+  .hero{padding:40px 16px 32px}
+  .hero h1{font-size:1.6rem}
+  .hero-logo{width:64px;height:64px;font-size:30px}
+  .items-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .item-info{padding:10px 12px 12px}
+  .item-name{font-size:0.8rem;min-height:2.4em}
+  .item-price{font-size:1rem}
+  .controls{padding:12px 14px}
+  .tag{padding:5px 12px;font-size:0.78rem}
+}
+@media(max-width:380px){
+  .items-grid{grid-template-columns:1fr 1fr;gap:8px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Hero ===== -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-logo">🤖</div>
+    <h1>AI 夢幻工廠</h1>
+    <p>蝦皮人氣 AI 軟體專賣店 · 換臉 · 繪圖 · 影片 · 音樂 · 語音</p>
+    <div class="item-count">📦 全館 194 件商品 · 已收錄 191 件 · ⭐ 4.86 星好評</div>
+    <a href="https://shopee.tw/mazz68" target="_blank" rel="noopener" class="btn-shop">
+      🛒 逛蝦皮賣場
+    </a>
+  </div>
+</section>
+
+<!-- ===== Controls ===== -->
+<div class="controls" id="controls">
+  <div class="controls-inner">
+    <div class="search-box">
+      <span class="icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="搜尋商品名稱..." autocomplete="off">
+    </div>
+    <div class="tags" id="tagsContainer"></div>
+  </div>
+</div>
+
+<!-- ===== Items ===== -->
+<section class="items-section">
+  <div class="items-grid" id="itemsGrid"></div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer class="footer">
+  <a href="https://shopee.tw/mazz68" target="_blank" rel="noopener" class="btn-shop">
+    🛒 逛全部 194 件商品
+  </a>
+  <div class="shop-name">
+    🏭 <a href="https://shopee.tw/mazz68" target="_blank">AI夢幻工廠</a>
+    · 蝦皮賣場 mazz68 · 台中沙鹿
+  </div>
+  <div class="footer-meta">
+    點擊商品卡片即前往蝦皮下單 · 安全快速 🚀
+  </div>
+</footer>
+
+<script>// ===== 商品資料（分類索引 0-based 對齊）=====
+var CATEGORIES = ["全部","AI換臉換衣系列","圖像創作編輯生成","影片編輯生成系列","語音克隆&數字人","本地端大模型","音樂創作生成","其他"];
+
+var ITEMS = [
+  {id:42625326042,shopid:25204842,name:"賣場 AI應用軟體 任選4款 一次打包買齊 統一價",price:2098,sold:38,img:"tw-11134207-81ztq-mg3j7u6ybg2278",cats:[4]},
+  {id:40858642009,shopid:25204842,name:"AI換臉工具 照片 影片 視訊 3合1",price:1496,sold:22,img:"tw-11134207-81ztn-mf6psgo0j4zxad",cats:[0]},
+  {id:50456802427,shopid:25204842,name:"FireRed-Image-Edit -AI改圖神器支援NSFW，文字修改穩如狗、老照片神修復、虛擬換衣超精準",price:880,sold:22,img:"tw-11134207-820ld-mo8i48wnsuf89c",cats:[0]},
+  {id:52157168083,shopid:25204842,name:"LTX-2.3-GGUF 文生影片 圖生影片",price:870,sold:10,img:"tw-11134207-820la-mn1jccu3fnk219",cats:[2]},
+  {id:41125765359,shopid:25204842,name:"AI黑科技 簡單易用的碼賽克去除工具",price:658,sold:9,img:"tw-11134207-820lg-mm21logyud5b6f",cats:[0]},
+  {id:50551256778,shopid:25204842,name:"天機紫微斗數專業預測軟體",price:520,sold:8,img:"tw-11134207-81ztc-mgzu5ddoak20fa",cats:[6]},
+  {id:47653696348,shopid:25204842,name:"AI夢幻工廠 商品 補價差專用",price:226782,sold:6,img:"tw-11134207-820lc-mnrcwvvckmpw74",cats:[6]},
+  {id:28242525164,shopid:25204842,name:"ASDS-AI-SD 自動化AI繪圖工作流",price:1030,sold:5,img:"tw-11134207-81zte-mfcmcya6ggzw2c",cats:[1]},
+  {id:49500595863,shopid:25204842,name:"MiniMax-Video-02 最新AI影片模型",price:769,sold:5,img:"tw-11134207-81ztq-mghm1by79nv1b1",cats:[2]},
+  {id:54405179579,shopid:25204842,name:"Wan2.2-SVI2-Pro-remix NSFW圖生影片",price:806,sold:4,img:"tw-11134207-81zti-mjtp9qw8syys7e",cats:[2]},
+  {id:44175147456,shopid:25204842,name:"AI 自動產生短劇解說影片",price:560,sold:3,img:"tw-11134207-820lb-mnmq2xs42txhbf",cats:[2]},
+  {id:53607580614,shopid:25204842,name:"AI換衣工具 AI虛擬換裝 衣服更換",price:980,sold:3,img:"tw-11134207-820lf-mmkmspc6b8xt47",cats:[0]},
+  {id:26893172003,shopid:25204842,name:"Anime 4K AI影片高畫質修復工具",price:430,sold:2,img:"tw-11134207-81zti-mg34vviv4npr39",cats:[2]},
+  {id:40874970747,shopid:25204842,name:"AI換臉直播工具 直播換臉 視訊換臉",price:497,sold:2,img:"tw-11134207-81zto-mfzubu36c6xb62",cats:[0]},
+  {id:43376705880,shopid:25204842,name:"Wan2.2-Remix AI影片創作 專注人物動態",price:808,sold:2,img:"tw-11134207-81ztj-mhdotregicjw88",cats:[2]},
+  {id:44372094398,shopid:25204842,name:"AI一鍵摳圖更換背景軟體",price:380,sold:2,img:"tw-11134207-81zti-mg5i8ah2o74e86",cats:[1]},
+  {id:47456359679,shopid:25204842,name:"AI客服機器人 ChatGPT整合 自動回覆",price:668,sold:2,img:"tw-11134207-820lh-ml2s1i6bi2h2a0",cats:[3]},
+  {id:47652718234,shopid:25204842,name:"換裝AI 一鍵換裝 虛擬試衣",price:529,sold:2,img:"tw-11134207-81zto-mhxhkk8uaxvn81",cats:[0]},
+  {id:48909311460,shopid:25204842,name:"CoPawPlus(OpenClaw 小龍蝦)整合包 開箱即用 遠端幫你安裝到好",price:848,sold:2,img:"tw-11134207-820l7-mnchj5buuxoj94",cats:[4]},
+  {id:50502311632,shopid:25204842,name:"Z-Image 秒產生NSFW文生圖神器",price:650,sold:2,img:"tw-11134207-81ztf-mjbum1dztog711",cats:[1]},
+  {id:57952420654,shopid:25204842,name:"GPT-SoVITS V4 最強的AI語音複製",price:448,sold:2,img:"tw-11134207-81ztj-mhqw3k74uy2we3",cats:[3]},
+  {id:28774839489,shopid:25204842,name:"AI影片修復 低解析度修復 補幀 高清化",price:458,sold:1,img:"tw-11134207-7ra0l-mc70iq397gbtb6",cats:[2]},
+  {id:41428169496,shopid:25204842,name:"HeartMuLa 輸入歌詞AI自動作曲",price:1090,sold:1,img:"tw-11134207-820lh-mn4fgn0ovls041",cats:[5]},
+  {id:42823262211,shopid:25204842,name:"OfficeAI助理 AI賦能讓工作更有效率",price:299,sold:1,img:"tw-11134207-81zti-mg640wpdcdfz36",cats:[6]},
+  {id:42923071379,shopid:25204842,name:"AI圖片清晰放大工具 模糊變清晰老照片修復",price:199,sold:1,img:"tw-11134207-820lg-mn6mcy86clxef3",cats:[1]},
+  {id:43360769645,shopid:25204842,name:"(代工)圖片清晰度提升 老照片修復",price:58,sold:1,img:"tw-11134207-7ra0m-mcrqutvtc47480",cats:[1]},
+  {id:44173409812,shopid:25204842,name:"AI提示詞優化器Prompt Optimizer",price:308,sold:1,img:"tw-11134207-81ztn-mfmx3pdsjbbea9",cats:[1]},
+  {id:44700053249,shopid:25204842,name:"Paper-Bin AI論文翻譯AI論文輔助工具",price:169,sold:1,img:"tw-11134207-81zte-mg6f2yi70mbu28",cats:[6]},
+  {id:46051687332,shopid:25204842,name:"AI魔法橡皮擦 安卓版",price:330,sold:1,img:"tw-11134207-81ztq-mh7y2pf8sjyiff",cats:[1]},
+  {id:46554592783,shopid:25204842,name:"AI自動生成PPT 簡報製作",price:732,sold:1,img:"tw-11134207-81zte-mjfakohd20hze0",cats:[6]},
+  {id:46708942183,shopid:25204842,name:"Flux.2-Klein-9B-EA 完美遷移到全新場景、姿勢、服裝、光線 換頭、換臉、換全身",price:850,sold:1,img:"tw-11134207-820lc-mnr99aroav4584",cats:[0]},
+  {id:47302253311,shopid:25204842,name:"AI 影片字幕助手 VideoCaptioner",price:348,sold:1,img:"tw-11134207-81ztq-mhkt13sef8qr7e",cats:[2]},
+  {id:48257452993,shopid:25204842,name:"AI即時口譯翻譯器 多國語言即時翻譯",price:470,sold:1,img:"tw-11134201-820lf-mm0zmmew4av886",cats:[3]},
+  {id:48807146115,shopid:25204842,name:"ToonCrafter 影片轉動畫 AI動畫製作",price:799,sold:1,img:"tw-11134207-820l4-mls6ezmbk35te4",cats:[2]},
+  {id:51309079657,shopid:25204842,name:"ACE-Step + HearMuLa 2合1音樂歌曲生成創作工具",price:1058,sold:1,img:"tw-11134207-820l9-mn80gqf5eyo395",cats:[5]},
+  {id:52108016360,shopid:25204842,name:"Wan2.2-Dasiwa 動漫及藝術類影片產生支援NSFW",price:790,sold:1,img:"tw-11134207-820lh-mnrgz70ovwugd4",cats:[2]},
+  {id:52150425477,shopid:25204842,name:"🔥手機 AI 換臉神器來襲！NSFW 一鍵變身",price:690,sold:1,img:"tw-11134207-81ztj-mgfmufqodtsab2",cats:[0]},
+  {id:53357986080,shopid:25204842,name:"MuseTalk 即時數位人 唇形同步",price:230,sold:1,img:"tw-11134201-820l5-mmgsvc1lhtdx98",cats:[3]},
+  {id:53850252882,shopid:25204842,name:"全網最全的 ComfyUI工作流教學課程",price:460,sold:1,img:"tw-11134207-820ld-mnduhu3zutj61c",cats:[1]},
+  {id:54209088395,shopid:25204842,name:"Flux+Qwen 雙劍合璧 多功能AI圖片編輯",price:1068,sold:1,img:"tw-11134207-820li-mn7zhimuxa8531",cats:[1]},
+  {id:54704905051,shopid:25204842,name:"CogView3 文生圖 圖生圖 最新AI繪圖",price:750,sold:1,img:"tw-11134207-81ztf-mjnxt6gbh6va45",cats:[1]},
+  {id:55254399540,shopid:25204842,name:"ComfyUI 完整版工作流 800+節點",price:680,sold:1,img:"tw-11134207-81zth-mja2oi6i0zy994",cats:[1]},
+  {id:55701372749,shopid:25204842,name:"Ai翻唱製作軟體 讓AI唱出下一個100萬播放",price:536,sold:1,img:"tw-11134207-81ztk-mh1hiqn0sc21fe",cats:[5]},
+  {id:57406506459,shopid:25204842,name:"One To All-Animation 視訊動作遷移",price:790,sold:1,img:"tw-11134207-820l7-mn4fyfooto911e",cats:[2]},
+  {id:24097526429,shopid:25204842,name:"VQ-Video 超高質量AI文生影片 720P輸出",price:445,sold:0,img:"tw-11134207-820lf-mn6ocrj1u7sx2f",cats:[2]},
+  {id:26042636414,shopid:25204842,name:"Wan-Animate 讓靜態圖片動起來",price:1058,sold:0,img:"tw-11134207-820lh-mn9ajh00h5vn5d",cats:[6]},
+  {id:26793069267,shopid:25204842,name:"Framepack AI圖片生成視頻 支援首尾幀過渡",price:565,sold:0,img:"tw-11134207-81ztn-mfxx0ymqpxjed2",cats:[2]},
+  {id:27694677038,shopid:25204842,name:"SCAIL-GGUF 高性能本地AI模型執行引擎",price:780,sold:0,img:"tw-11134207-820lb-mnfhtc7h15oodf",cats:[4]},
+  {id:27842607300,shopid:25204842,name:"Deep-Live-Cam 高效穩定直播AI換臉工具",price:580,sold:0,img:"tw-11134207-81zti-mg3404w8plajb5",cats:[0]},
+  {id:28594418999,shopid:25204842,name:"Remaker-AI 換衣換臉換背景 多功能AI編輯器",price:840,sold:0,img:"tw-11134207-820l6-mm2e8akmdpfk8e",cats:[0]},
+  {id:28626117039,shopid:25204842,name:"PI幣 手機挖礦+電腦節點挖礦賺錢 教學",price:1,sold:0,img:"tw-11134207-7rasd-m6bqvmjbnmvs91",cats:[6]},
+  {id:29044587813,shopid:25204842,name:"ComfyUI 最新版工作流+節點管理器",price:599,sold:0,img:"tw-11134207-820lh-mn4ftzf81amc9a",cats:[1]},
+  {id:29458133954,shopid:25204842,name:"戶外水龍頭 4分水龍頭",price:128,sold:0,img:"tw-11134207-7r98z-lz1q7us4gr32af",cats:[6]},
+  {id:29684830548,shopid:25204842,name:"文字轉語音軟體VPot(免費下載)",price:1,sold:0,img:"tw-11134207-7rbka-m8zbzc2hbzdya7",cats:[3]},
+  {id:40028091426,shopid:25204842,name:"NovaSR 一鍵提升音質即時音訊增強模型",price:110,sold:0,img:"tw-11134207-81zti-mjjhcmlofls356",cats:[5]},
+  {id:40125113806,shopid:25204842,name:"綜合AI軟體 代碼生成+聊天+寫作+翻譯+作曲+模型訓練",price:430,sold:0,img:"tw-11134207-81ztc-mg1wvyi6yv4cfa",cats:[5]},
+  {id:40179875466,shopid:25204842,name:"AI影片標題黨生成器 自動產生爆款標題",price:1,sold:0,img:"tw-11134207-820la-mmt5wliupougd3",cats:[2]},
+  {id:40427715172,shopid:25204842,name:"Windows AI 消除與摳圖軟體",price:250,sold:0,img:"tw-11134207-81zte-mizwjmhe8ohx04",cats:[1]},
+  {id:40524903757,shopid:25204842,name:"AI簡報製作助手 一句話生成精美簡報",price:500,sold:0,img:"tw-11134207-81ztf-mfzf7fupitqhcd",cats:[6]},
+  {id:40779944559,shopid:25204842,name:"AI視頻去浮水印工具 影片去Logo",price:430,sold:0,img:"tw-11134207-820lb-mmwut6wlngg371",cats:[2]},
+  {id:41022806762,shopid:25204842,name:"節點式 AI 繪畫ComfyUI整合包",price:498,sold:0,img:"tw-11134207-81ztf-mg35x2dh7x1o8c",cats:[1]},
+  {id:41223591219,shopid:25204842,name:"One-Min-Video 電影級AI影片創作",price:670,sold:0,img:"tw-11134207-81ztl-mg39r2yr668f75",cats:[2]},
+  {id:41229769750,shopid:25204842,name:"Omni Voice 600+語言語音複製 字幕生成語音",price:698,sold:0,img:"tw-11134207-820lc-mmuaq2jr0cuc23",cats:[3]},
+  {id:41425546068,shopid:25204842,name:"Hunyuan-Live 混元數位人",price:540,sold:0,img:"tw-11134207-81zte-mg5fawkhwcge2a",cats:[3]},
+  {id:41727935406,shopid:25204842,name:"🔥最新人聲去除神器 BGM提取 去人聲 提取伴奏",price:199,sold:0,img:"tw-11134207-820ld-mn6nph8pmako98",cats:[5]},
+  {id:41772492479,shopid:25204842,name:"AI 配音克隆聲音 indexTTS V2整合包",price:448,sold:0,img:"tw-11134207-81ztc-mfxx2xxu4tfu2c",cats:[3]},
+  {id:41960945678,shopid:25204842,name:"ComfyUI萬能預設整合包 200+模型工作流",price:418,sold:0,img:"tw-11134207-820lh-mn6mwvzcie4k3a",cats:[1]},
+  {id:42025062898,shopid:25204842,name:"把手機當作電腦的視訊Webcam鏡頭",price:99,sold:0,img:"tw-11134207-81zto-mg1agsmbzg94b2",cats:[6]},
+  {id:42075056087,shopid:25204842,name:"AI變聲器 即時聲音轉換+AI唱歌+翻唱",price:450,sold:0,img:"tw-11134207-81ztk-mg6hyysaphqgf2",cats:[5]},
+  {id:42223427674,shopid:25204842,name:"MiniMax-Remover 高效影片中物件移除",price:470,sold:0,img:"tw-11134207-81ztd-mfn4lnrk3f9l11",cats:[2]},
+  {id:42769053058,shopid:25204842,name:"Faster-Whisper 語音轉文字 超快辨識",price:560,sold:0,img:"tw-11134207-81ztg-mi5zrz31rg9030",cats:[3]},
+  {id:43429879064,shopid:25204842,name:"Kling 極致AI影片創作 高品質長視頻",price:560,sold:0,img:"tw-11134207-820lb-mmu1h9h2gydkd8",cats:[2]},
+  {id:43523417085,shopid:25204842,name:"Easy-Voice-Toolkit 語音辨識+聲音克隆",price:420,sold:0,img:"tw-11134207-81ztl-mfn0v3xexx54a5",cats:[3]},
+  {id:43530178574,shopid:25204842,name:"Klein_Edit-AI多合一圖像編輯器 局部替換、萬物遷移",price:1058,sold:0,img:"tw-11134207-820lf-mo0ddt1j4pae57",cats:[1]},
+  {id:43629634530,shopid:25204842,name:"AI聲音模仿工具 語音仿聲 AI變聲",price:630,sold:0,img:"tw-11134207-820l8-mmga6ucq6fwlf0",cats:[3]},
+  {id:43677106057,shopid:25204842,name:"FoleyCrafter 自動幫影片配音的AI工具",price:418,sold:0,img:"tw-11134207-81ztm-mi14pap3a58la4",cats:[3]},
+  {id:44475272344,shopid:25204842,name:"AI 影片智能 去除水印神器",price:420,sold:0,img:"tw-11134207-81ztq-mg38u7sbwlje35",cats:[2]},
+  {id:44509970206,shopid:25204842,name:"本地AI繪圖神器來襲！Stable Diffusion 中文版",price:748,sold:0,img:"tw-11134207-820l4-mnvnb9586arp83",cats:[1]},
+  {id:44907394224,shopid:25204842,name:"Faster Qwen3-TTS 即時語音合成加速引擎",price:650,sold:0,img:"tw-11134207-820l4-mlz1ggx64dmt7a",cats:[3]},
+  {id:44958720845,shopid:25204842,name:"HailuoAI 文生影片 圖生影片",price:299,sold:0,img:"tw-11134207-820ld-mmz3g5amu60x42",cats:[2]},
+  {id:45452844861,shopid:25204842,name:"AI 音樂生成工具 Diff Rhythm v2",price:598,sold:0,img:"tw-11134207-81ztl-mi28tteg2oeec5",cats:[5]},
+  {id:45651547203,shopid:25204842,name:"AI一鍵換臉軟體.離線版-無需聯網0費用",price:648,sold:0,img:"tw-11134207-820l5-mnrhaw4wm7lxde",cats:[0]},
+  {id:45800909082,shopid:25204842,name:"解鎖AI創意寶庫 RunningHub",price:8,sold:0,img:"tw-11134207-81zti-mgprglviltsb3a",cats:[6]},
+  {id:45904420206,shopid:25204842,name:"Kandinsky 5 - 輕量級圖文生影片 低配設備福音 8G顯示可用",price:699,sold:0,img:"tw-11134207-81zto-mja3mxvb6l8g14",cats:[2]},
+  {id:46153974466,shopid:25204842,name:"超簡單音樂合併神器 歌單一鍵連成一首",price:399,sold:0,img:"tw-11134207-81ztp-miw4e4p5pgciae",cats:[5]},
+  {id:46256734177,shopid:25204842,name:"FireRed-OCR 論文發票公式一鍵識別轉換",price:328,sold:0,img:"tw-11134207-820lh-mlekf7o9rtoh79",cats:[1]},
+  {id:46700772188,shopid:25204842,name:"FLORA 換衣圖生影片 虛擬試穿",price:539,sold:0,img:"tw-11134207-81zti-mgmmnime34lp25",cats:[0]},
+  {id:46855262897,shopid:25204842,name:"MiniMax-Remover AI移除影片路人水印",price:688,sold:0,img:"tw-11134207-81ztj-mjuukswjgmbmf9",cats:[2]},
+  {id:46900083122,shopid:25204842,name:"讓照片說話唱歌+配音對口數字人",price:500,sold:0,img:"tw-11134207-81ztj-mg6wq6upscne29",cats:[5]},
+  {id:46958234857,shopid:25204842,name:"LivePortrait 讓靜態照片變影片 數位人",price:648,sold:0,img:"tw-11134207-820lg-mmn0ecdkuq6bb2",cats:[3]},
+  {id:47354945503,shopid:25204842,name:"Fun_ASR 視訊即時麥克風語音轉文字",price:428,sold:0,img:"tw-11134201-81zto-mjoibtqq7mkn52",cats:[3]},
+  {id:47651957171,shopid:25204842,name:"HivisionIDPhoto AI一鍵製作證件照",price:302,sold:0,img:"tw-11134201-81ztn-mhd02nemtuz3eb",cats:[1]},
+  {id:47656557851,shopid:25204842,name:"Audio_separator 音樂（歌曲）人聲/樂器分離",price:399,sold:0,img:"tw-11134207-820l6-ml7tt1mwssn93b",cats:[5]},
+  {id:47706923586,shopid:25204842,name:"CogVideoX 2.0 升級版AI影片生成",price:798,sold:0,img:"tw-11134207-820la-mlj3rbtviy2s69",cats:[2]},
+  {id:47756522739,shopid:25204842,name:"Flux-換衣-FLUX虛擬換裝 衣物替換",price:576,sold:0,img:"tw-11134207-820l7-ml6qg5lol9mw9c",cats:[0]},
+  {id:47851077482,shopid:25204842,name:"AI人聲分離軟體 去除背景音樂 提取人聲",price:350,sold:0,img:"tw-11134207-81ztp-mgumfn8t6akuea",cats:[5]},
+  {id:47901759819,shopid:25204842,name:"Sora 影片水印清除器",price:200,sold:0,img:"tw-11134207-81zti-mh9efkrh2vbh73",cats:[2]},
+  {id:47908327565,shopid:25204842,name:"AI論文寫作助手 論文輔助",price:488,sold:0,img:"tw-11134207-820li-mmqbsk72i9s57d",cats:[6]},
+  {id:47955296796,shopid:25204842,name:"AI解除安裝工具 智能軟體卸載",price:520,sold:0,img:"tw-11134207-820la-mn1aduo894p183",cats:[6]},
+  {id:48254061980,shopid:25204842,name:"Stable Video Infinity(SVI) 2.0Pro 無限長影片",price:730,sold:0,img:"tw-11134207-81ztn-mjbso46zqjgnc4",cats:[2]},
+  {id:48303942726,shopid:25204842,name:"AI海報生成器 一鍵生成行銷海報",price:449,sold:0,img:"tw-11134207-81ztd-mivb4xga0lq801",cats:[1]},
+  {id:48450226235,shopid:25204842,name:"AI虛擬服裝模特 自動生成服裝展示圖",price:530,sold:0,img:"tw-11134207-81ztk-mggnr1wqaayy77",cats:[6]},
+  {id:48459622947,shopid:25204842,name:"Heygem V4 零成本AI數位人製作軟體",price:790,sold:0,img:"tw-11134207-820l8-mnl0co3z6ghy26",cats:[3]},
+  {id:48651115347,shopid:25204842,name:"AI影片換臉/AI圖片換臉 代工製作",price:8,sold:0,img:"tw-11134207-81ztl-mgvt1ga4qhor7d",cats:[0]},
+  {id:48806452349,shopid:25204842,name:"SoulX-Singer AI唱歌神器",price:780,sold:0,img:"tw-11134207-820l9-ml4y6idkg5j482",cats:[5]},
+  {id:48859786711,shopid:25204842,name:"LTX2.3-EditAnything 用提示詞輕鬆改影片",price:880,sold:0,img:"tw-11134207-820lh-mnodmrt7xh4w49",cats:[2]},
+  {id:49054496993,shopid:25204842,name:"ComfyUI-Mini 輕量版工作流",price:520,sold:0,img:"tw-11134207-81ztg-mjd5wp5y407402",cats:[1]},
+  {id:49354168522,shopid:25204842,name:"Ultra-SD-v2.2 ComfyUI繪画 Intel Core Ultra",price:499,sold:0,img:"tw-11134207-81ztp-mj45ialpowlje3",cats:[1]},
+  {id:49404919242,shopid:25204842,name:"DreamID-V 影像與影片間高保真換臉",price:780,sold:0,img:"tw-11134207-81ztj-mjnz4fv05y4ge5",cats:[0]},
+  {id:49453012495,shopid:25204842,name:"VibeVoice 2026最強中文AI配音員",price:518,sold:0,img:"tw-11134201-81ztm-mi5p0zzsaxhg70",cats:[3]},
+  {id:49506363447,shopid:25204842,name:"Kling-S2V 圖片生影片 文生影片",price:308,sold:0,img:"tw-11134207-820l7-ml2hsdi9gw79d5",cats:[2]},
+  {id:49603955011,shopid:25204842,name:"影片分割大師 無損分割視訊處理",price:390,sold:0,img:"tw-11134207-81ztn-miva4whq3x1j38",cats:[2]},
+  {id:50050255650,shopid:25204842,name:"AI一鍵歌曲創作",price:480,sold:0,img:"tw-11134207-81zti-mgcgv2949nnvad",cats:[5]},
+  {id:50451475027,shopid:25204842,name:"安卓AI人臉編輯器APP",price:430,sold:0,img:"tw-11134207-81ztf-mh3qha3yuozu74",cats:[6]},
+  {id:50502850044,shopid:25204842,name:"HunyuanVideo-Foley AI視訊配音",price:540,sold:0,img:"tw-11134207-81zte-mjexlt69iww543",cats:[3]},
+  {id:50555230754,shopid:25204842,name:"手機 AI變聲器 Voice Changer Pro",price:360,sold:0,img:"tw-11134207-81ztl-mjuarcsbynt353",cats:[3]},
+  {id:50704021106,shopid:25204842,name:"梅花易數六爻全功能版 心動即占",price:418,sold:0,img:"tw-11134207-81ztg-miz20tqao7wm54",cats:[6]},
+  {id:50751880342,shopid:25204842,name:"StableAvatar 真人說話影片生成器",price:530,sold:0,img:"tw-11134207-81ztm-mhbq9bua0tn3eb",cats:[2]},
+  {id:50751954445,shopid:25204842,name:"比FLUX快100倍 英偉達聯手MIT超快影像產生器",price:427,sold:0,img:"tw-11134207-81ztj-mhdtwbawrtvy29",cats:[1]},
+  {id:51308774675,shopid:25204842,name:"Inkdrop 文字浮水印移除工具",price:870,sold:0,img:"tw-11134207-820lh-mn16475kp0qp1d",cats:[2]},
+  {id:51506350368,shopid:25204842,name:"FLORA-Beta-換衣 衣物遷移 服裝試穿",price:640,sold:0,img:"tw-11134207-820lh-ml2ojwdu1ix175",cats:[0]},
+  {id:51603930211,shopid:25204842,name:"私密圖片儲存加密工具",price:198,sold:0,img:"tw-11134207-81zte-miv5z0foc07a7d",cats:[6]},
+  {id:51659432474,shopid:25204842,name:"Solong影片格式轉换器",price:350,sold:0,img:"tw-11134207-820l6-mnfqwx4r90xu2f",cats:[2]},
+  {id:51700818416,shopid:25204842,name:"AI 一鍵影片後製 翻譯+配音+字幕",price:370,sold:0,img:"tw-11134207-81ztn-mgocu02yyvwq6b",cats:[3]},
+  {id:51852644756,shopid:25204842,name:"LibreTranslate 本地翻譯神器49國語言",price:318,sold:0,img:"tw-11134207-81ztp-mi26fqw1n66g5f",cats:[6]},
+  {id:51857146925,shopid:25204842,name:"MuseTalk-V 虛擬主播 數位人直播",price:668,sold:0,img:"tw-11134207-820li-mlrdp9153dhcf0",cats:[3]},
+  {id:51858817097,shopid:25204842,name:"AI臉部自動追蹤 自動跟臉 直播神器",price:502,sold:0,img:"tw-11134207-820ld-mn1qntgxybk829",cats:[3]},
+  {id:52101086759,shopid:25204842,name:"最佳Ai影片去浮水印無損解析度",price:349,sold:0,img:"tw-11134207-81zte-mgvi1upc0ft8cd",cats:[2]},
+  {id:52304690453,shopid:25204842,name:"StableDiffusion 提示詞+案例+結構模型",price:298,sold:0,img:"tw-11134207-81ztq-mjhg29q038xzf7",cats:[1]},
+  {id:52501788381,shopid:25204842,name:"AI 任選2款 統一價",price:550,sold:0,img:"tw-11134207-81zto-mhabjqh9qu4v4c",cats:[6]},
+  {id:52606472230,shopid:25204842,name:"MuseTalk-Plus 進階數位人 高清輸出",price:580,sold:0,img:"tw-11134207-820l7-ml5xuknfs7i905",cats:[3]},
+  {id:52658090804,shopid:25204842,name:"AI老照片修復 模糊圖片清晰化",price:599,sold:0,img:"tw-11134207-820lc-mmjo7xtc4cg4fb",cats:[1]},
+  {id:52807713699,shopid:25204842,name:"MuseV 數位人影片生成",price:502,sold:0,img:"tw-11134207-820lh-mm9pg3snu2o394",cats:[3]},
+  {id:53104471983,shopid:25204842,name:"中醫養生時鐘桌面小工具軟體",price:198,sold:0,img:"tw-11134207-81zth-mjd3le95gum965",cats:[6]},
+  {id:53308901914,shopid:25204842,name:"ERNIE-Image-Turbo 文心一格 中文AI繪圖",price:799,sold:0,img:"tw-11134207-820l4-mn3ow44gv4ea7e",cats:[1]},
+  {id:53652172154,shopid:25204842,name:"Meta SAM 3 一鍵重建+更換影片中場景",price:640,sold:0,img:"tw-11134207-81ztg-mhjjpmkv8kcl37",cats:[2]},
+  {id:54059017315,shopid:25204842,name:"Fun-CineForge-5.0 多功能影片創作工具",price:1008,sold:0,img:"tw-11134207-820lg-mnawpmzmh2bmc0",cats:[2]},
+  {id:54358296182,shopid:25204842,name:"DeepSeek 本地部署一鍵運行",price:499,sold:0,img:"tw-11134207-820lg-mmpy94naby81c4",cats:[4]},
+  {id:54403949351,shopid:25204842,name:"HRMS人力資源管理系統",price:888,sold:0,img:"tw-11134207-81zto-miw24xv72ebpc9",cats:[6]},
+  {id:54451412668,shopid:25204842,name:"萬興喵影 影片剪輯 影片編輯 影片製作",price:750,sold:0,img:"tw-11134207-81zte-mh24gp6v06j1d7",cats:[2]},
+  {id:54453949357,shopid:25204842,name:"八字玄機寶V1.0 解鎖命運密碼",price:328,sold:0,img:"tw-11134207-81ztk-miw1tx93gy6e36",cats:[6]},
+  {id:54502717644,shopid:25204842,name:"MuseTalk 數字人 唇形同步 AI數字人整合包",price:548,sold:0,img:"tw-11134207-820l7-mn6o7t3fidj822",cats:[3]},
+  {id:54551644662,shopid:25204842,name:"AI漫畫生成器 文字轉漫畫",price:548,sold:0,img:"tw-11134207-820l4-mmil0vss6ccofe",cats:[1]},
+  {id:54603078464,shopid:25204842,name:"音視頻驅動圖片說話唱歌小工具",price:530,sold:0,img:"tw-11134207-81zth-mi94fendkbgh9f",cats:[5]},
+  {id:54607323464,shopid:25204842,name:"Kling-對口型 上嘴唇同步",price:688,sold:0,img:"tw-11134207-820l4-mlxqro9c68ea6e",cats:[3]},
+  {id:55057920421,shopid:25204842,name:"CogVideoX 文生影片 圖生影片 AI影片生成",price:498,sold:0,img:"tw-11134207-820le-mn6mhe3c66td1c",cats:[2]},
+  {id:55057973721,shopid:25204842,name:"Edge-TTS 電腦端微軟TTS配音工具",price:430,sold:0,img:"tw-11134207-820li-mmgvwzlp7x1r2c",cats:[3]},
+  {id:55103927941,shopid:25204842,name:"區域網路檔案共享工具",price:200,sold:0,img:"tw-11134207-81ztk-mivbpwburwn50d",cats:[6]},
+  {id:55353912203,shopid:25204842,name:"Charm-TTS-Pro 專業版AI語音合成",price:550,sold:0,img:"tw-11134207-820lf-mn1a4h9c0x6o8f",cats:[3]},
+  {id:55408283731,shopid:25204842,name:"Charm-TTS 中英文AI語音合成 情感豐富",price:745,sold:0,img:"tw-11134207-820lf-mn4g9kf0p4p1df",cats:[3]},
+  {id:55509427162,shopid:25204842,name:"AI短片工廠 AI電影神器 一鍵故事轉大片",price:818,sold:0,img:"tw-11134207-820l9-mnfixxyalxqb8f",cats:[6]},
+  {id:55807249492,shopid:25204842,name:"Haiper 文生影片 圖生影片 AI影片生成",price:480,sold:0,img:"tw-11134207-820lh-mlvjfa4ezite3a",cats:[2]},
+  {id:55854041366,shopid:25204842,name:"鮮藝AI 摳圖 離線毫秒摳圖神器",price:199,sold:0,img:"tw-11134207-81ztd-mj01b06cmbk2dc",cats:[1]},
+  {id:55901370628,shopid:25204842,name:"自動將影片轉為圖文下載AI工具",price:360,sold:0,img:"tw-11134207-81ztf-mh1ctpbfghl9c9",cats:[2]},
+  {id:56008237312,shopid:25204842,name:"AI影片補幀工具 讓影片更流暢 提高FPS",price:790,sold:0,img:"tw-11134207-820le-mmnjtsi9xfycdd",cats:[2]},
+  {id:56107390969,shopid:25204842,name:"VITA 數位人互動 即時對話",price:399,sold:0,img:"tw-11134207-820li-mlzenli3rf2d9c",cats:[3]},
+  {id:56152020997,shopid:25204842,name:"4G顯存玩AI繪畫 SD WebUI Forge",price:418,sold:0,img:"tw-11134207-81ztp-mhg2bmek8xl425",cats:[1]},
+  {id:56407511380,shopid:25204842,name:"AI 虛擬背景更換 去背 摳圖 一鍵整合包",price:988,sold:0,img:"tw-11134207-820ld-mm3elfbk4irnb5",cats:[1]},
+  {id:56408141508,shopid:25204842,name:"MiniMax-AI影片 高品質文生影片 圖生影片",price:540,sold:0,img:"tw-11134207-820l5-mmkirw6s15vn1f",cats:[2]},
+  {id:56452411104,shopid:25204842,name:"LivePortrait V3 肖像编辑 精準操控五官",price:460,sold:0,img:"tw-11134207-81ztc-mhqahiusktu0b4",cats:[3]},
+  {id:56606347074,shopid:25204842,name:"AI 多媒體工具箱 MTools",price:399,sold:0,img:"tw-11134207-820lc-ml2gfbm023up07",cats:[6]},
+  {id:57108484842,shopid:25204842,name:"一款強大且靈活的本地綜合多模型部署工具",price:399,sold:0,img:"tw-11134207-820l6-mmu8qqb5yps680",cats:[4]},
+  {id:57159784112,shopid:25204842,name:"AI驅動畫面穩定與修復抖動影片防抖軟體",price:460,sold:0,img:"tw-11134207-820le-mnpdoyu33xmu30",cats:[2]},
+  {id:57304471811,shopid:25204842,name:"MuseTalk-阿里 最新AI數字人技術",price:389,sold:0,img:"tw-11134207-820lh-mn6nzwgs1ybk54",cats:[3]},
+  {id:57305168732,shopid:25204842,name:"LivePortrait-Pro 高級數位人生成 照片說話",price:568,sold:0,img:"tw-11134207-81ztm-mjto71h9exvk45",cats:[3]},
+  {id:57404992976,shopid:25204842,name:"AI歌曲創作工具V2.0 音樂創作 歌詞創作",price:560,sold:0,img:"tw-11134207-820lg-mnatje5ltg5e42",cats:[5]},
+  {id:57451013022,shopid:25204842,name:"影音文案擷取助手 一鍵擷取影片字幕",price:299,sold:0,img:"tw-11134207-81ztf-mgt3vyjeearwd4",cats:[2]},
+  {id:57508970729,shopid:25204842,name:"Woosh 文字+影片一鍵產生逼真音效",price:658,sold:0,img:"tw-11134207-820lc-mn4sie6vwr2bcd",cats:[5]},
+  {id:57556338952,shopid:25204842,name:"Hummingbird 高效AI語音克隆",price:690,sold:0,img:"tw-11134207-820l8-ml2jd0nbh1c4fa",cats:[3]},
+  {id:57706338876,shopid:25204842,name:"MuseTalk-Turbo 極速數位人低延遲",price:540,sold:0,img:"tw-11134207-820l8-ml2j844y85jbfd",cats:[3]},
+  {id:57756350201,shopid:25204842,name:"Editmgt 文字指揮Ai修圖神器",price:548,sold:0,img:"tw-11134207-820l4-ml2m0vld3gn693",cats:[1]},
+  {id:57851201224,shopid:25204842,name:"AI照片編輯器(安卓版)",price:430,sold:0,img:"tw-11134207-81ztg-mgyburjxyyhbe4",cats:[1]},
+  {id:57856621622,shopid:25204842,name:"CLIP Interrogator AI分析圖片產出提示詞",price:390,sold:0,img:"tw-11134207-820l5-mlavon4p61vz61",cats:[1]},
+  {id:58054515450,shopid:25204842,name:"1800個AI繪畫提示詞庫提示詞咒語",price:88,sold:0,img:"tw-11134207-81zte-mjdvng5onuv4c1",cats:[1]},
+  {id:58102710162,shopid:25204842,name:"最佳手機AI視頻舞蹈生成器 安卓專用",price:518,sold:0,img:"tw-11134207-81ztg-mhxqx3amzlza2a",cats:[2]}
+];
+
+// ===== 圖片 URL =====
+const IMG_BASE = 'https://cf.shopee.tw/file';
+function imgUrl(id){return IMG_BASE+"/"+id}
+
+
+// ===== 狀態 =====
+let activeCat = -1; // -1 = 全部
+let searchTerm = '';
+
+// ===== DOM =====
+const grid = document.getElementById('itemsGrid');
+const tagsContainer = document.getElementById('tagsContainer');
+const searchInput = document.getElementById('searchInput');
+
+// ===== 渲染分類標籤 =====
+function renderTags(){
+  const allTag = `<span class="tag${activeCat===-1?' active':''}" data-idx="-1">📋 全部</span>`;
+  const catTags = CATEGORIES.map((c,i) =>
+    `<span class="tag${i===activeCat?' active':''}" data-idx="${i}">${c}</span>`
+  ).join('');
+  tagsContainer.innerHTML = allTag + catTags;
+  
+  document.querySelectorAll('.tag').forEach(el => {
+    el.addEventListener('click', () => {
+      activeCat = parseInt(el.dataset.idx);
+      searchTerm = searchInput.value.trim().toLowerCase();
+      renderTags();
+      renderItems();
+    });
+  });
+}
+
+// ===== 渲染商品 =====
+function renderItems(){
+  const filtered = ITEMS.filter(item => {
+    if(activeCat !== -1 && !item.cats.includes(activeCat)) return false;
+    if(searchTerm && !item.name.toLowerCase().includes(searchTerm)) return false;
+    return true;
+  });
+
+  if(filtered.length === 0){
+    grid.innerHTML = '<div class="no-items">😕 沒有符合的商品，試試其他關鍵字或分類</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(item => {
+    const primaryCat = CATEGORIES[item.cats[0]];
+    const link = `https://shopee.tw/product/${item.shopid}/${item.id}/`;
+    return `
+      <a href="${link}" target="_blank" rel="noopener" class="item-card">
+        <div class="item-img-wrap">
+          ${item.img ? `<img src="${imgUrl(item.img)}" alt="${item.name}" loading="lazy"
+               onerror="this.parentElement.innerHTML+='<div class=img-placeholder>🤖</div>';this.style.display='none'">` 
+               : `<div class="img-placeholder">🤖</div>`}
+          
+          <span class="cat-badge">${primaryCat}</span>
+        </div>
+        <div class="item-info">
+          <div class="item-name">${item.name}</div>
+          <div class="item-price-row">
+            <span class="item-price"><span class="currency">NT$</span> ${item.price.toLocaleString()}</span>
+            <span class="item-link-hint">前往蝦皮 ↗</span>
+          </div>
+        </div>
+      </a>
+    `;
+  }).join('');
+}
+
+// ===== 搜尋 =====
+searchInput.addEventListener('input', () => {
+  searchTerm = searchInput.value.trim().toLowerCase();
+  renderItems();
+});
+
+// ===== 初始化 =====
+renderTags();
+renderItems();
+</script>
+</body>
+</html>
